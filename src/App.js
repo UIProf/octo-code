@@ -13,15 +13,17 @@ const App = () => {
       modifyFileArray.push(arrayString);
     });
     
-    if (modifyFileArray != "") {
+    if (modifyFileArray !== "") {
       let button = document.getElementById("download");
       button.classList.add("downloadLink");
     }
   };
+  
   const extractDate = dateString => {
     const rex = /^([0-9]{4}\-(\d{2})\-(\d{2}))/;
     return dateString.match(rex)[0];
   };
+
   const trasformData = row => {
     const date = extractDate(row);
     console.log(date);
@@ -36,11 +38,13 @@ const App = () => {
       weight: user[2]
     };
   };
+
   const handleFileChosen = file => {
     fileReader = new FileReader();
     fileReader.onloadend = handleFileRead;
     fileReader.readAsText(file);
   };
+
   const convertCSVFile = args => {
     let result, ctr, keys, columndata, linedata, data;
     data = args.data || null;
@@ -66,11 +70,12 @@ const App = () => {
       });
       result += linedata;
     });
-    console.log('date:, ', result);
+    //console.log('date:, ', result);
     return result;
   };
+
   const downloadCSVFile = args => {
-    console.log("hello", JSON.stringify(modifyFileArray));
+
     let data, filename, downloadLink;
 
     let csv = convertCSVFile({
@@ -90,6 +95,7 @@ const App = () => {
     downloadLink.setAttribute("download", filename);
     downloadLink.click();
   };
+
     return (
       <div className="App">
         <h1>Data File convert to CSV file</h1>

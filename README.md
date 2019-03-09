@@ -1,68 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Please follow the command for run the project.
 
-## Available Scripts
 
-In the project directory, you can run:
+1. ### `npm install`
 
-### `npm start`
+2. ### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. ### `npm run build`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Fixed File Format converter
 
-### `npm run build`
+Your goal is to write a generic tool to convert fixed file format files to a csv file based on a metadata file describing its structure.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Feel free to use your favorite language and libraries if needed (but no proprietary libraries, only open source), fork this project and provide your complete code as a pull request (including source and tests).
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Use case
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Our fixed file format files can have any number of columns
+A column can be of 3 formats:
+* date (format yyyy-mm-dd)
+* numeric (decimal separator '.' ; no thousands separator ; can be negative)
+* string
 
-### `npm run eject`
+The structure of the file is described in a metadata file in csv format with a line for each column defining:
+* column name
+* column length
+* column type
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+You should transform the file to a csv file (separator ',' and row separator CRLF)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The dates have to be reformatted to dd/mm/yyyy
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The trailing spaces of string columns must be trimmed
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The csv file must include a first line with the columns names
 
-## Learn More
+## Example
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Data file:
+```
+1970-01-01John           Smith           81.5
+1975-01-31Jane           Doe             61.1
+1988-11-28Bob            Big            102.4
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Metadata file:
+```
+Birth date,10,date
+First name,15,string
+Last name,15,string
+Weight,5,numeric
+```
 
-### Code Splitting
+Output file:
+```
+Birth date,First name,Last name,Weight
+01/01/1970,John,Smith,81.5
+31/01/1975,Jane,Doe,61.1
+28/11/1988,Bob,Big,102.4
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Extra requirements
+* files are encoded in UTF-8 and may contain special characters
+* strings columns may contain separator characters like ',' and then the whole string needs to be escaped with " (double quotes). Only CR or LF are forbidden
+* in case the format of the file is not correct, the program should fail but say explicitly why
+* a fixed format file may be very big (several GB)
 
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
